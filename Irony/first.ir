@@ -1,0 +1,8 @@
+add std as *
+
+// the main call
+null main{
+  out ! "get 'em\nreally";
+  out! "whatever";
+  return
+}

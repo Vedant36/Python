@@ -1,0 +1,114 @@
+E 529117365
+T 390965105
+A 374061888
+O 326627740
+I 320410057
+N 313720540
+S 294300210
+R 277000841
+H 216768975
+L 183996130
+D 169330528
+C 138416451 
+U 117295780
+M 110504544
+F 95422055
+G 91258980
+P 90376747
+W 79843664
+Y 75294515
+B 70195826
+V 46337161
+K 35373464
+J 9613410
+X 8369915
+Z 4975847
+Q 4550166
+
+
+
+Word Frequencies:
+    THE :  6.42     ON :  0.78    ARE :  0.47
+     OF :  2.76   WITH :  0.75   THIS :  0.42
+    AND :  2.75     HE :  0.75      I :  0.41
+     TO :  2.67     IT :  0.74    BUT :  0.40
+      A :  2.43     AS :  0.71   HAVE :  0.39
+     IN :  2.31     AT :  0.58     AN :  0.37
+     IS :  1.12    HIS :  0.55    HAS :  0.35
+    FOR :  1.01     BY :  0.51    NOT :  0.34
+   THAT :  0.92     BE :  0.48   THEY :  0.33
+    WAS :  0.88   FROM :  0.47     OR :  0.30
+
+Digram Frequencies:
+     TH :  2.71     EN :  1.13     NG :  0.89
+     HE :  2.33     AT :  1.12     AL :  0.88
+     IN :  2.03     ED :  1.08     IT :  0.88
+     ER :  1.78     ND :  1.07     AS :  0.87
+     AN :  1.61     TO :  1.07     IS :  0.86
+     RE :  1.41     OR :  1.06     HA :  0.83
+     ES :  1.32     EA :  1.00     ET :  0.76
+     ON :  1.32     TI :  0.99     SE :  0.73
+     ST :  1.25     AR :  0.98     OU :  0.72
+     NT :  1.17     TE :  0.98     OF :  0.71
+
+Trigram Frequencies:
+    THE :  1.81    ERE :  0.31    HES :  0.24
+    AND :  0.73    TIO :  0.31    VER :  0.24
+    ING :  0.72    TER :  0.30    HIS :  0.24
+    ENT :  0.42    EST :  0.28    OFT :  0.22
+    ION :  0.42    ERS :  0.28    ITH :  0.21
+    HER :  0.36    ATI :  0.26    FTH :  0.21
+    FOR :  0.34    HAT :  0.26    STH :  0.21
+    THA :  0.33    ATE :  0.25    OTH :  0.21
+    NTH :  0.33    ALL :  0.25    RES :  0.21
+    INT :  0.32    ETH :  0.24    ONT :  0.20
+
+Quadgram Frequencies:
+   TION : 0.31    OTHE :  0.16   THEM :  0.12
+   NTHE : 0.27    TTHE :  0.16   RTHE :  0.12
+   THER : 0.24    DTHE :  0.15   THEP :  0.11
+   THAT : 0.21    INGT :  0.15   FROM :  0.10
+   OFTH : 0.19    ETHE :  0.15   THIS :  0.10
+   FTHE : 0.19    SAND :  0.14   TING :  0.10
+   THES : 0.18    STHE :  0.14   THEI :  0.10
+   WITH : 0.18    HERE :  0.13   NGTH :  0.10
+   INTH : 0.17    THEC :  0.13   IONS :  0.10
+   ATIO : 0.17    MENT :  0.12   ANDT :  0.10
+
+Quintgram Frequencies:
+  OFTHE :  0.18  ANDTH :  0.07  CTION :  0.05
+  ATION :  0.17  NDTHE :  0.07  WHICH :  0.05
+  INTHE :  0.16  ONTHE :  0.07  THESE :  0.05
+  THERE :  0.09  EDTHE :  0.06  AFTER :  0.05
+  INGTH :  0.09  THEIR :  0.06  EOFTH :  0.05
+  TOTHE :  0.08  TIONA :  0.06  ABOUT :  0.04
+  NGTHE :  0.08  ORTHE :  0.06  ERTHE :  0.04
+  OTHER :  0.07  FORTH :  0.06  IONAL :  0.04
+  ATTHE :  0.07  INGTO :  0.06  FIRST :  0.04
+  TIONS :  0.07  THECO :  0.05  WOULD :  0.04
+
+THE 1.87% AND 0.78% ING 0.69% HER 0.42%
+THA 0.37% ENT 0.36% ERE 0.33% ION 0.33%
+ETH 0.32% NTH 0.32% HAT 0.31% INT 0.29%
+FOR 0.28% ALL 0.27% STH 0.26% TER 0.26%
+EST 0.26% TIO 0.26% HIS 0.25% OFT 0.24%
+HES 0.24% ITH 0.24% ERS 0.24% ATI 0.24%
+OTH 0.23% FTH 0.23% DTH 0.23% VER 0.22%
+TTH 0.22% THI 0.22% REA 0.21% SAN 0.21%
+WIT 0.21% ATE 0.2%  ARE 0.2%  EAR 0.19%
+RES 0.19% ONT 0.18% TIN 0.18% ESS 0.18%
+RTH 0.18% WAS 0.18% SOF 0.18% EAN 0.17%
+YOU 0.17% SIN 0.17% STO 0.17% IST 0.17%
+EDT 0.16% EOF 0.16% EVE 0.16% ONE 0.16%
+AST 0.16% ONS 0.16% DIN 0.16% OME 0.16%
+CON 0.16% ERA 0.16% STA 0.15% OUR 0.15%
+NCE 0.15% TED 0.15% GHT 0.15% HEM 0.15%
+MAN 0.15% HEN 0.15% NOT 0.15% ORE 0.15%
+OUT 0.15% ORT 0.15% ESA 0.15% ERT 0.15%
+SHE 0.14% ANT 0.14% NGT 0.14% EDI 0.14%
+ERI 0.14% EIN 0.14% NDT 0.14% NTO 0.14%
+ATT 0.14% ECO 0.13% AVE 0.13% MEN 0.13%
+HIN 0.13% HEA 0.13% IVE 0.13% EDA 0.13%
+INE 0.13% RAN 0.13% HEC 0.13% TAN 0.13%
+RIN 0.13% ILL 0.13% NDE 0.13% THO 0.13%
+HAN 0.13% COM 0.12% IGH 0.12% AIN 0.12%
