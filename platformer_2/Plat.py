@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from json import load
 import pygame as pg
-import time as tm
+import time
 
 fps=60
 dim=pg.Rect(0, 0, 640, 360)
@@ -23,7 +23,7 @@ class Player:
     t=[True,False,False]                    # tags-inAir-sLip-vFlip
     l=[True,True]                            # variables to control the inAir var
     j=2                                        # jumpCounter
-    k=tm.time()
+    k=time.time()
     def __init__(self,pos,img):
         self.r = img.get_rect(topleft=pos)    # native Rect
         self.i = img                        # player image
@@ -56,7 +56,7 @@ class Player:
                 if self.p.x==0:
                     self.t[1]=False
                 self.j=2
-                self.k=tm.time()
+                self.k=time.time()
             elif self.p.y < 0:
                 self.r.top = tiles[tile].bottom
                 self.p.y*=-1
@@ -97,10 +97,10 @@ while True:
     for eve in pg.event.get():
         if eve.type==pg.QUIT or (eve.type==pg.KEYDOWN and eve.key==pg.K_ESCAPE):
             pg.quit()
-            exit()
+            sys.exit()
         if eve.type==pg.KEYDOWN:
             if eve.key==pg.K_SPACE:
-                if bool(v.j) and tm.time()-v.k<24/fps:
+                if bool(v.j) and time.time()-v.k<24/fps:
                     v.p.y=-12
                     v.j=(v.j-1)%3
             elif eve.key==pg.K_a:
@@ -133,13 +133,13 @@ class stopwatch:
     def check(self):
         if self.set is None: return '0.00000'
         if self.now is not None: 
-            self.act = self.now = round(tm.time() - self.set,5)
+            self.act = self.now = round(time.time() - self.set,5)
         return self.act
     def start(self):
-        self.set = tm.time()
+        self.set = time.time()
         self.now = 0
     def stop(self):
-        tm.time()-self.set
+        time.time()-self.set
         self.now = None
     def reset(self):
         self.act = self.now = self.set = None
@@ -161,7 +161,7 @@ wa = stopwatch()
             with open('speedruns.txt','r') as runs:
                 tries = int(runs.readline()[7:])
                 asd = runs.read().split('\n')[2:-1]
-            a=tm.ctime()
+            a=time.ctime()
             qwe = [[float(i[-10:-1]), f'{mo[a[4:7]]:02}.{int(a[8:10]):02}.{int(a[-2:]):02}', i[4:-22].strip()] for i in asd]
             qwe.append([wa.act, f'{mo[a[4:7]]:02}.{int(a[8:10]):02}.{int(a[-2:]):02}', user.strip()])
             dsa = [f'Tries: {tries+1}\n','#RR    Name                                Date            Times\n','------------------------------------------\n']
