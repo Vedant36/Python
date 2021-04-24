@@ -26,3 +26,5 @@ def main():
 
 if __name__ == '__main__':
 	main()
+	string="mel mm melqklnmdsk udklnaapk gm'nrrsllugtn tm spisknaa vc nmn pmhlltsenaamslcplst mcvdnug ns cs cnm ncsgcdsl m an"
+	caesar_scorer(string)

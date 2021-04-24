@@ -29,11 +29,11 @@ class Player:
         self.i = img                        # player image
         self.c = dim.copy()
         self.c2= [self.c.x,self.c.y]
-    
+
     @property
     def b(self):
         return pg.transform.flip(self.i,self.t[2],False)
-    
+
     def move(self,tiles,lev):
         self.r.x += int(self.p.x)
         collisions = self.r.collidelistall(tiles)
@@ -62,7 +62,7 @@ class Player:
                 self.p.y*=-1
                 self.p.x+=sign(self.p.x)
             self.p.y=0
-            
+
         self.t[0]=all(self.l)
         self.l[0]=self.l[1]
         if self.r.clamp(lgr)!=self.r:
@@ -120,7 +120,7 @@ while True:
             v.i=pg.image.load('data/pixelperson.png').convert_alpha()
             v.r = pg.Rect(160,128,16,32)
             v.t[2] = False
-            
+
     pg.display.update()
     fpsClock.tick(fps)
 
@@ -151,7 +151,7 @@ wa = stopwatch()
         # if eve.type==3 and eve.key==pg.K_r:
             # v.t[2] = False
             wa.reset()
-            
+
     if speedrunning:
         mo = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sep':9, 'Oct':10, 'Nov':11, 'Dec':12}
         temp = v.r.colliderect((448,32,32,32))

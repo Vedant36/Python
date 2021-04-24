@@ -25,17 +25,17 @@ while True:
 
   #event handling
   for eve in pg.event.get():
-    if eve.type==12:
+    if eve.type==pg.QUIT:
       pg.quit()
       sys.exit()
-    if eve.type in {4, 5, 6}:
+    if eve.type in {pg.MOUSEMOTION, pg.MOUSEBUTTONUP, pg.MOUSEBUTTONDOWN}:
       wdg.update(eve)
       if pg.mouse.get_pressed()[0]:
         if pos is None:
           pos = eve.pos
         pg.draw.aaline(sdf, color, pos, eve.pos)
         pos = eve.pos
-      if eve.type==6:
+      if eve.type==pg.MOUSEBUTTONUP:
         pos = None
         continue
 

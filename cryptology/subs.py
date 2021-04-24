@@ -1,6 +1,7 @@
 import etao
+import pycode
 asd='''
-KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS
+mel mm melqklnmdsk udklnaapk gm'nrrsllugtn tm spisknaa vc nmn pmhlltsenaamslcplst mcvdnug ns cs cnm ncsgcdsl m an
 '''
 asd=asd[1:-1].lower()
 qwe=asd
@@ -9,10 +10,11 @@ lea=len(qwe)
 print(f'Length => |{lea}|')
 def val(a):return(ord(a)-97)
 wer='abcdefghijklmnopqrstuvwxyz'
-# key='sjqbcg-dnvw---x-yk---f-----'
 # key='sjqbcgudnvwzmtxeyklaifroph'
+key='--------------------------'
 cht='etaoinshrldcumfgpwybvkjxzq'
 #		 ------.----...-.--...--...
+
 def conv(sd):
 	sd0=[]
 	for i in sd:

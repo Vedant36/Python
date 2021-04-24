@@ -1,1 +1,1 @@
-pip3 install --upgrade pygame pynput noise selenium graphics.py pyglet pyinstaller opensimplex PyOpenGL pycipher etao requests pyperclip discord.py
+pip3 install --upgrade pygame pynput noise selenium pyglet pyinstaller opensimplex PyOpenGL pycipher etao requests pyperclip discord.py pynvim

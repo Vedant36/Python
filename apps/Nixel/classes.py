@@ -28,15 +28,19 @@ class Button:
     self.s = 0
     self.r = pg.Rect(rect)
     self.i = False
+
   def draw(self, sdf):
     pg.draw.rect(sdf, self.c[self.s], self.r)
+
   def update(self, eve):
     t=self.s
     if self.r.collidepoint(eve.pos):
-      if eve.type in {5, 6} and eve.button==1:self.s = 7 - eve.type
+      if eve.type in {pg.MOUSEBUTTONUP, pg.MOUSEBUTTONDOWN} and eve.button==1:
+        self.s = 1+(eve.type==pg.MOUSEBUTTONDOWN)
       else:self.s = (self.s+self.i>1)+1
     else:
       self.s = 0
-      if eve.type==6 and eve.button==1:self.i=False
-    if 3*t+self.s==6:self.i = True
+      if eve.type==pg.MOUSEBUTTONUP and eve.button==1:self.i=False
+    if 3*t+self.s==6:
+      self.i = True
     return 3*t+self.s == 7
