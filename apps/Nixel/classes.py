@@ -13,12 +13,12 @@ class Popup:
   def draw(self, sdf):
     pg.draw.rect(sdf, self.c, self.r)
   def update(self, eve):
-    if eve.type==6:
+    if eve.type==pg.MOUSEMOTION:
       self.w = None
     elif not any([i.r.collidepoint(eve.pos) for i in Widget.l[Widget.l.index(self)+1:]]):
-      if eve.type==4 and self.w is not None and pg.mouse.get_pressed()[0]:
+      if eve.type==pg.MOUSEBUTTONDOWN and self.w is not None and pg.mouse.get_pressed()[0]:
         self.r.topleft = eve.pos[0]-self.w[0], eve.pos[1]-self.w[1]
-      if eve.type==5 and self.r.collidepoint(eve.pos):
+      if eve.type==pg.MOUSEBUTTONUP and self.r.collidepoint(eve.pos):
         self.w = eve.pos[0]-self.r.x, eve.pos[1]-self.r.y
         Widget.l.append(Widget.l.pop(Widget.l.index(self)))
 

@@ -46,11 +46,11 @@ while True:
   sdf.blit(tr.scale(tr.smoothscale(di, (28, 28)),(112, 112)), (240, 120))
   text(y[p][0])
   for eve in pg.event.get():
-    if eve.type==12:
+    if eve.type==pg.QUIT:
       pg.quit()
       sys.exit()
-    if eve.type==2:
-      if eve.key in {275,276}:
+    if eve.type==pg.K_KEYDOWN:
+      if eve.key in {pg.K_RIGHT,pg.K_LEFT}:
         p = p+(551-2*eve.key)
   pg.display.update()
   fpsClock.tick(fps)

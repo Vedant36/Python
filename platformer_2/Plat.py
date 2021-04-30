@@ -2,12 +2,11 @@
 from json import load
 import pygame as pg
 import time
+import sys
 
 fps=60
 dim=pg.Rect(0, 0, 640, 360)
-# pg.init()
-pg.display.init()
-pg.font.init()
+pg.init()
 fpsClock=pg.time.Clock()
 sdf=pg.display.set_mode(dim.size, 0, 32)
 pg.display.set_caption('Platformer 1.0 (stable)')
@@ -19,13 +18,13 @@ def sign(num):
     return 0
 
 class Player:
-    p=pg.math.Vector2(0,0)                    # momentum
+    p=pg.math.Vector2(0,0)                  # momentum
     t=[True,False,False]                    # tags-inAir-sLip-vFlip
-    l=[True,True]                            # variables to control the inAir var
-    j=2                                        # jumpCounter
+    l=[True,True]                           # variables to control the inAir var
+    j=2                                     # jumpCounter
     k=time.time()
     def __init__(self,pos,img):
-        self.r = img.get_rect(topleft=pos)    # native Rect
+        self.r = img.get_rect(topleft=pos)  # native Rect
         self.i = img                        # player image
         self.c = dim.copy()
         self.c2= [self.c.x,self.c.y]
@@ -114,7 +113,7 @@ while True:
                 if v.p.x!= vel:v.t[1]=True
             if eve.key==pg.K_d:
                 if v.p.x!=-vel:v.t[1]=True
-        if eve.type==3 and eve.key==pg.K_r:
+        if eve.type==pg.KEYUP and eve.key==pg.K_r:
             lev=pg.image.load('levels/map4.png').convert_alpha()
             rec=load_rects('map4')
             v.i=pg.image.load('data/pixelperson.png').convert_alpha()
@@ -147,8 +146,8 @@ wa = stopwatch()
 
 # def load_rects(file):
                 # if v.p.x!=-vel:v.t[1]=True
-        if eve.type in {2, 3} and wa.set is None: wa.start()
-        # if eve.type==3 and eve.key==pg.K_r:
+        if eve.type in {pg.KEYDOWN, pg.KEYUP} and wa.set is None: wa.start()
+        # if eve.type==pg.KEYUP and eve.key==pg.K_r:
             # v.t[2] = False
             wa.reset()
 

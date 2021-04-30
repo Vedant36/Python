@@ -51,7 +51,7 @@ draw()
 
 while True:
   for event in pg.event.get():
-    if event.type==12 or (event.type==2 and event.key==27):
+    if event.type==pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
       bye()
   #pg.draw.rect(sdf,(0,255,0),(5,5,2,2))
   pg.display.update()

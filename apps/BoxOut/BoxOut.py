@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 22 22:00:21 2020
@@ -47,7 +48,7 @@ draw(1)
 
 while True:
   for event in pg.event.get():
-    if event.type==12 or (event.type==2 and event.key==27):
+    if event.type==pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
       pg.quit()
       sys.exit()
   pg.draw.rect(sdf,(0,255,0),(5,5,2,2))

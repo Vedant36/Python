@@ -11,8 +11,9 @@ sdf = pg.display.set_mode(dim.size, 0, 32)
 pg.display.set_caption('Title')
 
 while True:
+
     for eve in pg.event.get():
-        if eve.type==12:
+        if eve.type==pg.QUIT:
             pg.quit()
             sys.exit()
 

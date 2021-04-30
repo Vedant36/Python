@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Sat Apr 11 12:24:43 2020
@@ -7,7 +8,6 @@ Created on Sat Apr 11 12:24:43 2020
 
 import pygame        as pg
 import sys
-import pygame.locals as lv
 import random        as rd
 import time          as tm
 
@@ -15,10 +15,10 @@ start_time=tm.time()
 fps = 60
 box=10
 xl,yl=500,300
-spd=6#speed
-sta=5#no. of blocks at 
-poi=5#no. of current length points
-pro=pre=275
+spd=6   #speed
+sta=5   #no. of blocks at 
+poi=5   #no. of current length points
+pro=pre=pg.K_DOWN
 pos=[[5,15],[6,15],[7,15],[8,15],[9,15]]
 
 def fod():
@@ -32,17 +32,17 @@ def draw(col=(64,255,64),pos=pos):
 def che(pre,food):
   sto=pos.pop(0)
   pos.append([0,0])
-  if pre<275 and pre+pro != 547:
+  if pre<pg.K_DOWN and pre+pro != pg.K_RIGHT+pg.K_LEFT:
     pos[-1][0]=pos[-2][0]
-    if   pre==273:
+    if   pre==pg.K_RIGHT:
       pos[-1][1]=pos[-2][1]-1
-    elif pre==274:
+    elif pre==pg.K_LEFT:
       pos[-1][1]=pos[-2][1]+1
-  elif pre>274:
+  elif pre>pg.K_LEFT:
     pos[-1][1]=pos[-2][1]
-    if   pre==276 :#and pro !=275:
+    if   pre==pg.K_UP :#and pro !=pg.K_DOWN:
       pos[-1][0]=pos[-2][0]-1
-    elif pre==275 and pro !=276:
+    elif pre==pg.K_DOWN and pro !=pg.K_UP:
       pos[-1][0]=pos[-2][0]+1
   if pos[-1]==food[0]:
     pos.insert(0,sto)
@@ -51,7 +51,7 @@ def che(pre,food):
     draw((255,32,32),food)
     return food
   else:return None
-    
+
 def bye():
   import os
   import psutil
@@ -60,7 +60,7 @@ def bye():
   print('Execution Time:',tm.time()-start_time)
   pg.quit()
   sys.exit()
-  
+
 def text(st):
   io=False
   tm.sleep(2)
@@ -80,8 +80,8 @@ pg.display.set_caption('Interesting Title')
 c=0
 io=True
 lis={round(i*fps/spd) for i in range(spd+1)}
-pg.mixer.music.load('bensound-slowmotion.mp3')
-pg.mixer.music.play(-1, 1)
+# pg.mixer.music.load('bensound-slowmotion.mp3')
+# pg.mixer.music.play(-1, 1)
 tm.sleep(1)
 draw()
 food=fod()
@@ -96,14 +96,16 @@ pg.display.update()
 while True:
   ert=False
   for event in pg.event.get():
-    if event.type == lv.QUIT or (event.type==2 and event.key==27):bye()
-    elif event.type==2 and event.key==32:io=not io
-    elif event.type==2 and pre!=event.key and event.key in range(273,277):
-      if pre+event.key not in {547,551}:
+    if event.type == pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
+        bye()
+    elif event.type==pg.KEYDOWN and event.key==pg.K_SPACE:
+        io=not io
+    elif event.type==pg.KEYDOWN and pre!=event.key and event.key in range(pg.K_RIGHT,pg.K_UP):
+      if pre+event.key not in {pg.K_RIGHT+pg.K_LEFT,pg.K_UP+pg.K_DOWN}:
         pre=event.key
     ert=True
     pro=pre
-      
+
   if ((pre==pro and c in lis) or pre!=pro) and io:
     wer=pos[0]
     www=che(pre,food)
@@ -116,8 +118,9 @@ while True:
     draw()
     ert=True
     if pre!=pro:c=0
-  
+
   c+=1
   if c>fps:c%=fps
   if io:pg.display.update()
   fpsClock.tick(fps)
+

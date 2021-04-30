@@ -1,7 +1,5 @@
-import math   as ma
 import numpy  as np
 import pygame as pg
-import random as rd
 import sys
 import time   as tm
 
@@ -16,7 +14,6 @@ siz=[ima[0].get_width(),ima[0].get_height()]
 land=np.random.randint(0,2,(dim[0]//siz[0],dim[1]//(siz[0]-1)),bool)
 print(land.shape)
 sdf.fill((127,255,127))
-print('lol')
 
 def blet(land,i,j):
   sdf.blit(ima[int(land[i,j])],(siz[0]*(i)+6,(siz[0]-1)*(j)-5*int(land[i,j])+6))
@@ -36,12 +33,10 @@ for i in range(land.shape[0]):
 
 while True:
   for event in pg.event.get():
-    if event.type==12 or (event.type==2 and event.key==27):
+    if event.type==pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
       pg.quit()
       sys.exit()
-    if event.type==2 and event.key==32:
-      # pg.display.update()
-      # tm.sleep(1)
+    if event.type==pg.KEYDOWN and event.key==pg.K_SPACE:
       sdf.fill((127,255,127))
       smooth_draw(land)
       # draw(land)

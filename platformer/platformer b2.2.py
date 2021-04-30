@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # THIS METHOD OF COLLISION CHECK DOES NOT WORK. SO THIS IS CLOSED.
 
 import json
@@ -73,10 +74,10 @@ while True:
 
   #event handler
   for eve in pg.event.get():
-    if eve.type==12:
+    if eve.type==pg.QUIT:
       pg.quit()
       sys.exit()
-    if eve.type==2:
+    if eve.type==pg.KEYDOWN:
       if eve.key==lv.K_SPACE:
         v.p.y=-12
       if eve.key==lv.K_a:
@@ -89,7 +90,7 @@ while True:
         lev=pg.image.load('levels/map4.png').convert_alpha()
         rec=load_rects('map4')
         v=Player([128,128],pg.image.load('data/pixelperson.png').convert_alpha())
-    if eve.type==3:
+    if eve.type==pg.KEYUP:
       if eve.key==lv.K_a:
         if v.p.x!= vel:v.t[1]=True
       if eve.key==lv.K_d:

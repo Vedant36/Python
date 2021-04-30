@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Sat Apr 11 12:03:45 2020
@@ -65,11 +66,9 @@ def bye():
 while True:
   for eve in pg.event.get():
     if eve.type!=pre:
-      print(str(eve)[7:-3])
+      print(str(eve)[7:-3], flush=1)
     pre=eve.type
-    if eve.type == 12:
+    if eve.type == pg.QUIT:
       bye()
-    if eve.type==16:
-      sdf
   pg.display.update()
   fpsClock.tick(fps)

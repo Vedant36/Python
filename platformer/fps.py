@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 from os.path import join
 import pygame as pg
@@ -54,10 +55,10 @@ while True:
   phy=player.physics
   rot=player.rotate
   for event in pg.event.get():
-    if event.type==12 or (event.type==2 and event.key==27):
+    if event.type==pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
       pg.quit()
       sys.exit()
-    elif event.type==2:
+    elif event.type==pg.KEYDOWN:
       if event.key == lv.K_w:
         it=1
       elif event.key == lv.K_s:
