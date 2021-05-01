@@ -1,0 +1,16 @@
+pythonpy
+pynvim
+
+pygame
+pynput
+pyinstaller
+noise
+selenium
+pyglet
+etao
+opensimplex
+PyOpenGL
+requests
+pyperclip
+discord.py
+pycipher
