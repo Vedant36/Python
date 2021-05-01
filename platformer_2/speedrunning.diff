@@ -1,0 +1,48 @@
+12c12,13
+< pg.display.set_caption('Platformer 1.0 (stable)')
+---
+> pg.display.set_caption('Platformer 1.0 with speedrunning (stable)')
+> user = 'Unknown'
+68a70,87
+> class stopwatch:
+>     def __init__(self):
+>         self.act = self.now = self.set = None
+>     def check(self):
+>         if self.set is None: return '0.00000'
+>         if self.now is not None: 
+>             self.act = self.now = round(time.time() - self.set,5)
+>         return self.act
+>     def start(self):
+>         self.set = time.time()
+>         self.now = 0
+>     def stop(self):
+>         time.time()-self.set
+>         self.now = None
+>     def reset(self):
+>         self.act = self.now = self.set = None
+> wa = stopwatch()
+> 
+113a133
+>         if eve.type in {pg.KEYDOWN, pg.KEYUP} and wa.set is None: wa.start()
+119a140,160
+>             wa.reset()
+> 
+>     mo = {'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sep':9, 'Oct':10, 'Nov':11, 'Dec':12}
+>     temp = v.r.colliderect((448,32,32,32))
+>     if temp and not temp2:
+>         wa.stop()
+>         print(wa.act)
+>         with open('speedruns.txt','r') as runs:
+>             tries = int(runs.readline()[7:])
+>             asd = runs.read().split('\n')[2:-1]
+>         a=time.ctime()
+>         qwe = [[float(i[-10:-1]), f'{mo[a[4:7]]:02}.{int(a[8:10]):02}.{int(a[-2:]):02}', i[4:-22].strip()] for i in asd]
+>         qwe.append([wa.act, f'{mo[a[4:7]]:02}.{int(a[8:10]):02}.{int(a[-2:]):02}', user.strip()])
+>         dsa = [f'Tries: {tries+1}\n','#RR    Name                                Date            Times\n','------------------------------------------\n']
+>         dsa.extend([f'#{i[0]+1:02}    {i[1][-1][:16]:<16}    {i[1][1]}    {i[1][0]:<8}s\n' for i in enumerate(sorted(qwe))])
+>         with open('speedruns.txt','w') as run:
+>             run.writelines(dsa)
+>     temp2=temp
+>     font=pg.font.Font('freesansbold.ttf',16).render(f'{wa.check()}', True, (0,0,0), (255, 255, 255, 0)).convert()
+>     font.set_colorkey((255, 255, 255, 0))
+>     sdf.blit(font,(0,0))

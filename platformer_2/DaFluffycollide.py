@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pygame as pg, sys
 from pygame.locals import *
 mainClock = pg.time.Clock()
@@ -35,9 +36,9 @@ while True:
             pg.quit()
             sys.exit()
         if eve.type in {KEYDOWN,KEYUP}:
-            if eve.key == K_RIGHT:right = bool(3-eve.type)
-            if eve.key == K_LEFT :left  = bool(3-eve.type)
-            if eve.key == K_DOWN :down  = bool(3-eve.type)
-            if eve.key == K_UP   :up    = bool(3-eve.type)
+            if eve.key == K_RIGHT:right = bool(pg.KEYUP-eve.type)
+            if eve.key == K_LEFT :left  = bool(pg.KEYUP-eve.type)
+            if eve.key == K_DOWN :down  = bool(pg.KEYUP-eve.type)
+            if eve.key == K_UP   :up    = bool(pg.KEYUP-eve.type)
     pg.display.update()
     mainClock.tick(60)
