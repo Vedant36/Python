@@ -1,5 +1,6 @@
 pythonpy
 pynvim
+speedtest-cli
 
 pygame
 pynput
