@@ -12,13 +12,12 @@ pg.display.set_caption('Title')
 
 # running = True
 while True:
-    sdf.fill(0xffffff)
+    sdf.fill(0x263119)
     for eve in pg.event.get():
         # print(eve.type, end='\r')
         if eve.type==pg.QUIT:
             pg.quit()
             sys.exit()
-        if eve.type
 
     pg.display.update()
     fpsClock.tick(fps)
