@@ -16,10 +16,10 @@ def sign(num):
 	return 0
 
 class Player:
-	p=pg.math.Vector2(0,0)				# momentum
-	t=[True,False,False]				# tags-inAir-sLip-vFlip
-	l=[True,True]						# variables to control the inAir var
-	j=2									# jumpCounter
+	p=pg.math.Vector2(0,0)	# momentum
+	t=[True,False,False]	# tags-inAir-sLip-vFlip
+	l=[True,True]			# variables to control the inAir var
+	j=2						# jumpCounter
 	k=time.time()
 	def __init__(self,pos,img):
 		self.r = img.get_rect(topleft=pos)  # native Rect
