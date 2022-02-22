@@ -10,11 +10,15 @@ pg = __import__('pygame')
 
 # Initialisation {{{1
 FPS = 60
-dim = pg.Rect(0, 0, 640, 360)
+Map = pg.Rect(0, 0, 640, 360)
 pg.init()
 fpsClock = pg.time.Clock()
-sdf = pg.display.set_mode(dim.size, 0, 32)
-pg.display.set_caption('Platformer 1.2')
+Screen = pg.display.set_mode(Map.size, 0, 32)
+pg.display.set_caption('Platformer 1.3')
+KEYS = {
+    "left": pg.K_a,
+    "right": pg.K_d
+}
 
 # Player Class {{{1
 # TODO: replace class because only one instance of it is ever used
@@ -31,25 +35,24 @@ class Player:
     def __init__(self, starting_position, img):
         self.r = img.get_rect(topleft=starting_position)
         self.i = img                        # player image
-        self.c = dim.copy()
-        self.c2= [self.c.x,self.c.y]
+        self.c = Map.copy()
 
     # move {{{2
     def move(self, tiles):
         """Step through a single frame"""
+        # Handle x-coordinate {{{3
         self.r.x += int(self.p.x)
-        collisions = self.r.collidelistall(tiles)
-        for tile in collisions:
+        for tile in self.r.collidelistall(tiles):
             if self.p.x > 0:
                 self.r.right = tiles[tile].left
             elif self.p.x < 0:
                 self.r.left = tiles[tile].right
 
+        # Handle y-coordinate {{{3
         self.p.y += 1
         self.r.y += int(self.p.y)
-        collisions = self.r.collidelistall(tiles)
         self.l[1] = True
-        for tile in collisions:
+        for tile in self.r.collidelistall(tiles):
             if self.p.y > 0:
                 self.l[1] = False
                 self.r.bottom = tiles[tile].top
@@ -66,7 +69,7 @@ class Player:
                 self.p.y *= -1
                 self.p.x *= 1.1
             self.p.y = 0
-
+        # }}}3
         self.InAir = all(self.l)
         self.l[0] = self.l[1]
         if self.r.clamp(map_rect) != self.r:
@@ -75,40 +78,36 @@ class Player:
 
 # Helper functions {{{1
 # Keydown handler {{{2
-def handle_keydown(key, v):
+def handle_keydown(key, player):
     """Handles pygame.KEYDOWN events"""
-    running = True
-    match key:
-        case pg.K_ESCAPE|pg.K_q:
-            running = False
-        case pg.K_SPACE:
-            if v.JumpCount>0 and time.time()-v.k<24/FPS:
-                v.p.y = -12
-                v.JumpCount -= 1
-        case pg.K_h:
-            v.p.x = -SPEED
-            v.Slipping = False
-            v.VertFlip = True
-        case pg.K_l:
-            v.p.x = SPEED
-            v.Slipping = False
-            v.VertFlip = False
-    return running
+    if key in {pg.K_ESCAPE,pg.K_q}:
+        return False
+    if key == pg.K_SPACE:
+        if player.JumpCount>0 and time.time()-v.k<24/FPS:
+            player.p.y = SPEED[1]
+            player.JumpCount -= 1
+    elif key == KEYS["left"]:
+        player.p.x = -SPEED[0]
+        player.Slipping = False
+        player.VertFlip = True
+    elif key == KEYS["right"]:
+        player.p.x = SPEED[0]
+        player.Slipping = False
+        player.VertFlip = False
+    return True
 
 # Keyup handler {{{2
-def handle_keyup(key, v):
+def handle_keyup(key, player):
     """Handles pygame.KEYUP events"""
-    reload = False
-    match key:
-        case pg.K_h:
-            if v.p.x != SPEED:
-                v.Slipping = True
-        case pg.K_l:
-            if v.p.x != -SPEED:
-                v.Slipping = True
-        case pg.K_r:
-            reload = True
-    return reload
+    if key == KEYS["left"]:
+        if player.p.x != SPEED[0]:
+            player.Slipping = True
+    elif key == KEYS["right"]:
+        if player.p.x != -SPEED[0]:
+            player.Slipping = True
+    elif key == pg.K_r:
+        return True
+    return False
 
 # data loader {{{2
 def load_data():
@@ -128,41 +127,39 @@ STARTING_POSITION = [160, 128]
 map_sprite, player_sprite, rects = load_data()
 map_rect = map_sprite.get_rect()
 v = Player(STARTING_POSITION, player_sprite)
-SPEED = 4
+SPEED = [5, -12]
 running = True
 pg.event.set_allowed((pg.QUIT, pg.KEYDOWN, pg.KEYUP))
 
 # Game Loop {{{1
 while running:
     # redraw {{{2
-    sdf.fill((44,232,245))
-    sdf.blit(map_sprite,(0,0),area = v.c)
-    sdf.blit(pg.transform.flip(v.i,v.VertFlip,False), (v.r.x-v.c.x,v.r.y-v.c.y))
+    Screen.fill((44,232,245))
+    Screen.blit(map_sprite,(0,0),area = v.c)
+    Screen.blit(pg.transform.flip(v.i,v.VertFlip,False), (v.r.x-v.c.x,v.r.y-v.c.y))
     pg.display.update()
     fpsClock.tick(FPS)
 
     # logic {{{2
     v.move(rects)
-    v.c2[0] = min((v.c2[0] + max(0, v.r.centerx - v.c.centerx) / 24), map_rect.w - dim.w)
-    v.c2[1] = min((v.c2[1] + max(0, v.r.centery - v.c.centery) / 24), map_rect.h - dim.h)
-    v.c.topleft = int(v.c2[0]),int(v.c2[1])
+    v.c.x = min(max(0, v.c.x + (v.r.centerx - v.c.centerx) / 24), map_rect.w - Map.w)
+    v.c.y = min(max(0, v.c.y + (v.r.centery - v.c.centery) / 24), map_rect.h - Map.h)
     v.c.clamp_ip(map_rect)
 
     # event handler {{{2
     for eve in pg.event.get():
         # variable changes: running, v.p.{x,y}, v.{tags}
-        match eve.type:
-            case pg.QUIT:
-                running = False
-            case pg.KEYDOWN:
-                running = handle_keydown(eve.key, v)
-            case pg.KEYUP:
-                if handle_keyup(eve.key, v):
-                    map_sprite, player_sprite, rects = load_data()
-                    map_rect = map_sprite.get_rect()
-                    v.JumpCount = 0
-                    v.i = player_sprite
-                    v.r.topleft = STARTING_POSITION
-                    v.VertFlip = False
+        if eve.type == pg.QUIT:
+            running = False
+        elif eve.type == pg.KEYDOWN:
+            running = handle_keydown(eve.key, v)
+        elif eve.type == pg.KEYUP:
+            if handle_keyup(eve.key, v):
+                map_sprite, player_sprite, rects = load_data()
+                map_rect = map_sprite.get_rect()
+                v.JumpCount = 0
+                v.i = player_sprite
+                v.r.topleft = STARTING_POSITION
+                v.VertFlip = False
     # }}}2
 pg.quit()
