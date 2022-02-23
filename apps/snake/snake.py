@@ -1,126 +1,138 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Apr 11 12:24:43 2020
-
-@author: Vedant36
-"""
-
-import pygame        as pg
+#!/usr/bin/python
+"""Simple Snake Game"""
+# pylint: disable=C0103
+# Imports {{{1
 import sys
-import random        as rd
-import time          as tm
-
-start_time=tm.time()
-fps = 60
-box=10
-xl,yl=500,300
-spd=6   #speed
-sta=5   #no. of blocks at 
-poi=5   #no. of current length points
-pro=pre=pg.K_DOWN
-pos=[[5,15],[6,15],[7,15],[8,15],[9,15]]
-
-def fod():
-  return [[rd.randint(0,int(xl/box)-1),rd.randint(0,int(yl/box)-1)]]
-
-def draw(col=(64,255,64),pos=pos):
-  for i in pos:
-    pg.draw.rect(sdf,col,(i[0]*box,i[1]*box,box,box))
-    pg.draw.rect(sdf,(0,0,0),(i[0]*box,i[1]*box,box,box),1)
-
-def che(pre,food):
-  sto=pos.pop(0)
-  pos.append([0,0])
-  if pre<pg.K_DOWN and pre+pro != pg.K_RIGHT+pg.K_LEFT:
-    pos[-1][0]=pos[-2][0]
-    if   pre==pg.K_RIGHT:
-      pos[-1][1]=pos[-2][1]-1
-    elif pre==pg.K_LEFT:
-      pos[-1][1]=pos[-2][1]+1
-  elif pre>pg.K_LEFT:
-    pos[-1][1]=pos[-2][1]
-    if   pre==pg.K_UP :#and pro !=pg.K_DOWN:
-      pos[-1][0]=pos[-2][0]-1
-    elif pre==pg.K_DOWN and pro !=pg.K_UP:
-      pos[-1][0]=pos[-2][0]+1
-  if pos[-1]==food[0]:
-    pos.insert(0,sto)
-    food=fod()
-    while food[0] in pos:food=fod()
-    draw((255,32,32),food)
+import random
+import time
+pg = __import__('pygame')
+# Constants {{{1
+FPS = 60
+COLORS = {
+    "bg": (0, 0, 0),
+    "snake": (64, 255, 64),
+    "food": (255, 32, 32),
+    "font": (32, 192, 255)
+}
+box = 10
+DIMENSIONS = (500, 300)
+xl, yl = DIMENSIONS
+SPEED = 6  # speed
+sta = 5  # no. of blocks at
+poi = 5  # no. of current length points
+pro = last_key = pg.K_DOWN
+Position = [[5, 15], [6, 15], [7, 15], [8, 15], [9, 15]]
+# Snake food {{{1
+def gen_food_location(position):
+    """Return the new location for snek fod"""
+    food = [random.randint(0, int(xl / box) - 1),
+            random.randint(0, int(yl / box) - 1)]
+    while food in Position:
+        food = [random.randint(0, int(xl / box) - 1),
+            random.randint(0, int(yl / box) - 1)]
     return food
-  else:return None
 
-def bye():
-  import os
-  import psutil
-  process = psutil.Process(os.getpid())
-  print('   Memory Used:',process.memory_info().rss/1048576,'MB')
-  print('Execution Time:',tm.time()-start_time)
-  pg.quit()
-  sys.exit()
+# draw rectangles {{{1
+def draw(color, *position):
+    """Draw the given rectangles"""
+    for i in position:
+        pg.draw.rect(Screen, COLORS[color], (i[0] * box, i[1] * box, box, box))
+        pg.draw.rect(Screen, COLORS["bg"], (i[0] * box, i[1] * box, box,
+                     box), 1)
 
-def text(st):
-  io=False
-  tm.sleep(2)
-  font=pg.font.Font('freesansbold.ttf',int(xl/26)).render('{} {} points'.format(st,poi-5),True,(32,192,255),(0,0,0))
-  rect=font.get_rect()
-  rect.center=(xl/2,yl/2)
-  sdf.fill((0,0,0))
-  sdf.blit(font,rect)
-  pg.display.update()
-  tm.sleep(2)
-  bye()
+# Check is snek got fod {{{1
+def check(_last_key, food):
+    """Check if food eaten"""
+    sto = Position.pop(0)
+    Position.append([0, 0])
+    if _last_key < pg.K_DOWN and _last_key + pro != pg.K_RIGHT + pg.K_LEFT:
+        Position[-1][0] = Position[-2][0]
+        if _last_key == pg.K_RIGHT:
+            Position[-1][1] = Position[-2][1] - 1
+        elif _last_key == pg.K_LEFT:
+            Position[-1][1] = Position[-2][1] + 1
+    elif _last_key > pg.K_LEFT:
+        Position[-1][1] = Position[-2][1]
+        if _last_key == pg.K_UP:  # and pro !=pg.K_DOWN:
+            Position[-1][0] = Position[-2][0] - 1
+        elif _last_key == pg.K_DOWN and pro != pg.K_UP:
+            Position[-1][0] = Position[-2][0] + 1
+    if Position[-1] == food[0]:
+        Position.insert(0, sto)
+        food = gen_food_location(Position)
+        draw("snake", food)
+        return food
+    return None
 
+
+# Draw text {{{1
+def draw_text(text):
+    """Draw text"""
+    time.sleep(2)
+    font = pg.font.Font(pg.font.get_default_font(), 20)
+    font_surface = font.render(f'{text} {poi-5} points', True, COLORS["font"], (0, 0, 0))
+    rect = font_surface.get_rect(center=(xl / 2, yl / 2))
+    Screen.fill((0, 0, 0))
+    Screen.blit(font_surface, rect)
+    pg.display.update()
+    time.sleep(2)
+    pg.quit()
+    sys.exit()
+
+# Initialization {{{1
 pg.init()
 fpsClock = pg.time.Clock()
-sdf = pg.display.set_mode((xl,yl), 0, 32)
-pg.display.set_caption('Interesting Title')
-c=0
-io=True
-lis={round(i*fps/spd) for i in range(spd+1)}
-# pg.mixer.music.load('bensound-slowmotion.mp3')
-# pg.mixer.music.play(-1, 1)
-tm.sleep(1)
-draw()
-food=fod()
-# print(food)
-# print(pos)
-tm.sleep(1)
-draw()
-food=fod()
-draw((255,32,32),food)
+Screen = pg.display.set_mode(DIMENSIONS, 0, 32)
+pg.display.set_caption('Snake Game 0.2')
+pg.mixer.music.load('bensound-slowmotion.mp3')
+pg.mixer.music.play(-1, 1)
+food = gen_food_location(Position)
+draw("snake", food)
 pg.display.update()
 
+counter = 0
+paused = False
+lis = {round(i*FPS/SPEED) for i in range(SPEED+1)}
+
+# Game Loop {{{1
 while True:
-  ert=False
-  for event in pg.event.get():
-    if event.type == pg.QUIT or (event.type==pg.KEYDOWN and event.key==pg.K_q):
-        bye()
-    elif event.type==pg.KEYDOWN and event.key==pg.K_SPACE:
-        io=not io
-    elif event.type==pg.KEYDOWN and pre!=event.key and event.key in range(pg.K_RIGHT,pg.K_UP):
-      if pre+event.key not in {pg.K_RIGHT+pg.K_LEFT,pg.K_UP+pg.K_DOWN}:
-        pre=event.key
-    ert=True
-    pro=pre
+    # Event Loop {{{2
+    ert = False
+    for event in pg.event.get():
+        if event.type == pg.QUIT or event.type == pg.KEYDOWN and event.key == pg.K_q:
+            pg.quit()
+            sys.exit()
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                paused = not paused
+            elif last_key != event.key and event.key in {pg.K_LEFT, pg.K_RIGHT, pg.K_UP, pg.K_DOWN}:
+                if (last_key in {pg.K_LEFT, pg.K_RIGHT} and event.key in {pg.K_UP, pg.K_DOWN}) or \
+                        (last_key in {pg.K_UP, pg.K_DOWN} and event.key in {pg.K_LEFT, pg.K_RIGHT}):
+                    last_key = event.key
+        ert = True
+        pro = last_key
 
-  if ((pre==pro and c in lis) or pre!=pro) and io:
-    wer=pos[0]
-    www=che(pre,food)
-    if www!= None:
-      food=www
-      poi+=1
-    if any([pos.count(i)-1 for i in pos]): text('You Just Ate Yourself')
-    if not (-1<pos[-1][0]<xl/box and -1<pos[-1][1]<yl/box): text('You Experienced Kinetic Energy')
-    pg.draw.rect(sdf,(0,0,0),(wer[0]*box,wer[1]*box,box,box))
-    draw()
-    ert=True
-    if pre!=pro:c=0
+    # dunno {{{2
+    if (last_key == pro and counter in lis or last_key != pro) and not paused:
+        wer = Position[0]
+        www = check(last_key, food)
+        if www is not None:
+            food = www
+            poi += 1
+        if any(Position.count(i) - 1 for i in Position):
+            draw_text('You Just Ate Yourself')
+        if not (-1 < Position[-1][0] < xl / box and -1 < Position[-1][1] < yl / box):
+            draw_text('You Experienced Kinetic Energy')
+        pg.draw.rect(Screen, COLORS["bg"], (wer[0] * box, wer[1] * box, box,
+                     box))
+        draw("snake", *Position)
+        ert = True
+        if last_key != pro:
+            counter = 0
 
-  c+=1
-  if c>fps:c%=fps
-  if io:pg.display.update()
-  fpsClock.tick(fps)
-
+    counter += 1
+    if counter > FPS:
+        counter %= FPS
+    if not paused:
+        pg.display.update()
+    fpsClock.tick(FPS)
