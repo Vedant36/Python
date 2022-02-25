@@ -1,41 +1,40 @@
 #!/usr/bin/env python3
 """Simple Platformer Game"""
 # pylint: disable=C0103
+# TODO: game should run similarly if the fps is set differently
 # Imports {{{1
 from json import load
 import time
 from os import environ
-environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-pg = __import__('pygame')
+environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+import pygame as pg
 
-# Initialisation {{{1
+# Constants {{{1
 FPS = 60
-Map = pg.Rect(0, 0, 640, 360)
-pg.init()
-fpsClock = pg.time.Clock()
-Screen = pg.display.set_mode(Map.size, 0, 32)
-pg.display.set_caption('Platformer 1.3')
-KEYS = {
-    "left": pg.K_a,
-    "right": pg.K_d
-}
+DIMENSIONS = (640, 360)
+KEYS = {"left": pg.K_a, "right": pg.K_d}
+STARTING_POSITION = [160, 128]
+SPEED = [5, -12]  # [x, y]
+
 
 # Player Class {{{1
 # TODO: replace class because only one instance of it is ever used
 class Player:
     """Player"""
+
     # Initialization {{{2
-    p = pg.math.Vector2(0,0)    # momentum
-    InAir = True                # in the air while jumping
-    Slipping = False            # player is slipping to stop
-    VertFlip = False            # is the player facing left
+    p = pg.math.Vector2(0, 0)  # momentum
+    InAir = True  # in the air while jumping
+    Slipping = False  # player is slipping to stop
+    VertFlip = False  # is the player facing left
     JumpCount = 0
-    l = [True, True]          # variables to control the inAir var
+    l = [True, True]  # variables to control the inAir var
     k = time.time()
+
     def __init__(self, starting_position, img):
         self.r = img.get_rect(topleft=starting_position)
-        self.i = img                        # player image
-        self.c = Map.copy()
+        self.i = img  # player image
+        self.c = Screen.get_rect()
 
     # move {{{2
     def move(self, tiles):
@@ -57,8 +56,8 @@ class Player:
                 self.l[1] = False
                 self.r.bottom = tiles[tile].top
                 if self.Slipping:
-                    self.p.x -= self.p.x*0.2
-                    if -0.01<self.p.x<0.01:
+                    self.p.x -= self.p.x * 0.2
+                    if -0.01 < self.p.x < 0.01:
                         self.p.x = 0
                 if self.p.x == 0:
                     self.Slipping = False
@@ -76,14 +75,15 @@ class Player:
             self.r.clamp_ip(map_rect)
             self.p.y += 1
 
+
 # Helper functions {{{1
 # Keydown handler {{{2
 def handle_keydown(key, player):
     """Handles pygame.KEYDOWN events"""
-    if key in {pg.K_ESCAPE,pg.K_q}:
+    if key in {pg.K_ESCAPE, pg.K_q}:
         return False
     if key == pg.K_SPACE:
-        if player.JumpCount>0 and time.time()-v.k<24/FPS:
+        if player.JumpCount > 0 and time.time() - v.k < 24 / FPS:
             player.p.y = SPEED[1]
             player.JumpCount -= 1
     elif key == KEYS["left"]:
@@ -95,6 +95,7 @@ def handle_keydown(key, player):
         player.Slipping = False
         player.VertFlip = False
     return True
+
 
 # Keyup handler {{{2
 def handle_keyup(key, player):
@@ -109,42 +110,59 @@ def handle_keyup(key, player):
         return True
     return False
 
+
 # data loader {{{2
 def load_data():
     """Loads rectangular coordinates for the map"""
-    map4 = pg.image.load('levels/map4.png').convert_alpha()
-    player = pg.image.load('data/pixelperson.png').convert_alpha()
-    with open('levels/map4.json', encoding='utf-8') as fp:
+    map4 = pg.image.load("levels/map4.png").convert_alpha()
+    player = pg.image.load("data/pixelperson.png").convert_alpha()
+    with open("levels/map4.json", encoding="utf-8") as fp:
         data = load(fp)
-        w = data['width']
+        w = data["width"]
         # The file stores the topleft values of all the collision boxes
-        rectlist = [pg.Rect(32*(a%w),32*(a//w),32,32)
-            for a,b in enumerate(data['layers'][0]['data']) if b != 0]
+        rectlist = [
+            pg.Rect(32 * (a % w), 32 * (a // w), 32, 32)
+            for a, b in enumerate(data["layers"][0]["data"])
+            if b != 0
+        ]
         return (map4, player, rectlist)
 
-# Loading the data {{{1
-STARTING_POSITION = [160, 128]
+
+# Initialization {{{1
+pg.init()
+fpsClock = pg.time.Clock()
+Screen = pg.display.set_mode(DIMENSIONS, 0, 32)
+Display = Screen.get_rect()
+pg.display.set_caption("Platformer 1.4")
 map_sprite, player_sprite, rects = load_data()
 map_rect = map_sprite.get_rect()
 v = Player(STARTING_POSITION, player_sprite)
-SPEED = [5, -12]
 running = True
 pg.event.set_allowed((pg.QUIT, pg.KEYDOWN, pg.KEYUP))
 
 # Game Loop {{{1
 while running:
     # redraw {{{2
-    Screen.fill((44,232,245))
-    Screen.blit(map_sprite,(0,0),area = v.c)
-    Screen.blit(pg.transform.flip(v.i,v.VertFlip,False), (v.r.x-v.c.x,v.r.y-v.c.y))
+    Screen.fill((44, 232, 245))
+    Screen.blit(map_sprite, (0, 0), area=Display)
+    Screen.blit(
+        pg.transform.flip(v.i, v.VertFlip, False),
+        (v.r.x - Display.x, v.r.y - Display.y)
+    )
     pg.display.update()
     fpsClock.tick(FPS)
 
     # logic {{{2
     v.move(rects)
-    v.c.x = min(max(0, v.c.x + (v.r.centerx - v.c.centerx) / 24), map_rect.w - Map.w)
-    v.c.y = min(max(0, v.c.y + (v.r.centery - v.c.centery) / 24), map_rect.h - Map.h)
-    v.c.clamp_ip(map_rect)
+    Display.x = min(
+        max(0, Display.x + (v.r.centerx - Display.centerx) / 24),
+        map_rect.w - Screen.get_width(),
+    )
+    Display.y = min(
+        max(0, Display.y + (v.r.centery - Display.centery) / 24),
+        map_rect.h - Screen.get_height(),
+    )
+    Display.clamp_ip(map_rect)
 
     # event handler {{{2
     for eve in pg.event.get():
